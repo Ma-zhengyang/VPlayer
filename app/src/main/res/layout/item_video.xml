@@ -14,7 +14,7 @@
         android:layout_height="60dp"
         android:scaleType="centerCrop" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="8dp"
@@ -24,6 +24,8 @@
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
             android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textSize="16sp" />
@@ -32,9 +34,10 @@
             android:id="@+id/tvDuration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
             android:maxLines="2"
             android:textSize="12sp" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

@@ -24,14 +24,14 @@ import butterknife.ButterKnife;
 
 public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final String TAG = VideoListAdapter.class.getSimpleName();
+    private static final String TAG = "Vplayer" + VideoListAdapter.class.getSimpleName();
 
     private List<VideoBean> videoList = new ArrayList<>();
     private Context context;
     private OnVideoItemClickListener onVideoItemClickListener;
 
     public interface OnVideoItemClickListener {
-        void onVideoItemClick(View view, int position);
+        void onVideoItemClick(VideoBean videoBean);
     }
 
     public void setOnVideoItemClickListener(OnVideoItemClickListener listener) {
@@ -72,7 +72,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ivThumbnail.setImageDrawable(null);
 
         tvTitle.setText(videoBean.getDisplayName());
-        tvDuration.setText(videoBean.getPath());
+        tvDuration.setText(String.valueOf(videoBean.getDuration()));
         Glide.with(context)
                 .load(videoBean.getPath())
                 .placeholder(R.drawable.ic_image_loading)
@@ -103,7 +103,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @Override
         public void onClick(View v) {
             if (onVideoItemClickListener != null) {
-                onVideoItemClickListener.onVideoItemClick(v, this.getPosition());
+                onVideoItemClickListener.onVideoItemClick(videoList.get(this.getPosition()));
             }
         }
     }

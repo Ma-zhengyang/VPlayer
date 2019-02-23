@@ -7,6 +7,7 @@ package com.android.mazhengyang.vplayer.bean;
 public class VideoBean {
 
     private String displayName;
+    private String duration;
     private String path;
 
     public String getDisplayName() {
@@ -15,6 +16,14 @@ public class VideoBean {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
     public String getPath() {
