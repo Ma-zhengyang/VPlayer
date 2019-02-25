@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">VPlayer</string>
+
+    <string name="granted_permission">请先打开 %1$s 权限</string>
+    <string name="drawoverlays_permission">请允许VPlayer显示在其他应用上层</string>
+    <string name="drawoverlays_permission_failed">授权失败!</string>
 </resources>

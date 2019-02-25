@@ -19,19 +19,22 @@ public class FloatingService extends Service {
 
     @Override
     public void onCreate() {
+        Log.d(TAG, "onCreate: ");
         super.onCreate();
 
-        floatingPlayer = new FloatingPlayer(this);
+        floatingPlayer = new FloatingPlayer(this, 0);
     }
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
         super.onDestroy();
         floatingPlayer = null;
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
+        Log.d(TAG, "onUnbind: ");
         return super.onUnbind(intent);
     }
 
@@ -44,11 +47,26 @@ public class FloatingService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Uri uri = intent.getData();
-        Log.d(TAG, "onStartCommand: uri=" + uri);
-
-        if (uri != null) {
-            floatingPlayer.startVideo(uri);
+        if (intent != null) {
+            String action = intent.getAction();
+            Log.d(TAG, "onStartCommand: action=" + action);
+            if ("startFloatingPlayer".equals(action)) {
+                Uri uri = intent.getData();
+                Log.d(TAG, "onStartCommand: uri=" + uri);
+                if (uri != null) {
+                    floatingPlayer.startVideo(uri);
+                }
+            } else if ("backToActivity".equals(action)) {
+                Intent i = new Intent();
+                i.setClass(this, MainActivity.class);
+                startActivity(i);
+                stopSelf();
+            } else if ("stopService".equals(action)) {
+                floatingPlayer.stop();
+                stopSelf();
+            }
+        } else {
+            Log.w(TAG, "onStartCommand: intent is null.");
         }
 
         return START_STICKY;
