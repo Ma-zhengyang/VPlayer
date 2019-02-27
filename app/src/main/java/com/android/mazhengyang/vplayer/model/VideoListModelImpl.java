@@ -1,13 +1,12 @@
 package com.android.mazhengyang.vplayer.model;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.util.Log;
+import android.os.Handler;
 
-import com.android.mazhengyang.vplayer.bean.VideoBean;
-import com.android.mazhengyang.vplayer.utils.Util;
+import com.android.mazhengyang.vplayer.presenter.IVideoListPresent;
+import com.android.mazhengyang.vplayer.utils.ImageBlockManager;
+import com.android.mazhengyang.vplayer.utils.ImageLoader;
+import com.android.mazhengyang.vplayer.utils.ImageManager;
 
 /**
  * Created by mazhengyang on 19-2-20.
@@ -15,38 +14,50 @@ import com.android.mazhengyang.vplayer.utils.Util;
 
 public class VideoListModelImpl implements IVideoListModel {
 
-    private static final String TAG = "Vplayer" + VideoListModelImpl.class.getSimpleName();
+    private static final String TAG = "Vplayer." + VideoListModelImpl.class.getSimpleName();
 
-    private final Uri videoListUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+    private ImageLoader mLoader;
+    private ImageBlockManager mImageBlockManager;
+    private final Handler mHandler = new Handler();
 
-    @Override
-    public void loadData(Context context, IDataToPresent listen) {
+    private IImageList mImageList;
 
-        Cursor cursor = context.getContentResolver().query(videoListUri, new String[]
-                {MediaStore.Video.Media.DISPLAY_NAME,
-                        MediaStore.Video.Media.DATA,
-                        MediaStore.Video.Media.DURATION},
-                null,
-                null,
-                null);
-        int count = cursor.getCount();
-        cursor.moveToFirst();
-        Log.d(TAG, "loadData: count=" + count);
-        for (int i = 0; i != count; ++i) {
-            String displayName = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
-            Long duration = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media.DURATION));
-            String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
-            cursor.moveToNext();
-            Log.d(TAG, "onCreate: displayName=" + displayName + ", path=" + path);
-
-            VideoBean videoBean = new VideoBean();
-            videoBean.setDisplayName(displayName);
-            videoBean.setDuration(Util.formatTime(duration));
-            videoBean.setPath(path);
-            listen.onSuccess(videoBean);
-
-        }
-
+    public VideoListModelImpl(Context context) {
+        mLoader = new ImageLoader(context.getContentResolver(), mHandler);
+        mImageBlockManager = new ImageBlockManager(mHandler, mLoader);
     }
 
+    @Override
+    public IImageList makeAllImages(Context context, int sortMode, boolean storageAvailable) {
+        int sort = ImageManager.getSort(sortMode);
+        boolean isEmptyImageList = false;
+        if (!storageAvailable) {
+            isEmptyImageList = true;
+        }
+        mImageList = ImageManager.makeImageList(context.getContentResolver(), sort,
+                isEmptyImageList);
+        return mImageList;
+    }
+
+    @Override
+    public void setVisibleRows(int start, int end, IVideoListPresent iVideoListPresent) {
+        if (mImageBlockManager != null) {
+            mImageBlockManager.setVisibleRows(start, end, mImageList, iVideoListPresent);
+        }
+    }
+
+    @Override
+    public void stop() {
+        if (mLoader != null) {
+            mLoader.stop();
+        }
+    }
+
+    @Override
+    public void recycle() {
+        if (mImageBlockManager != null) {
+            mImageBlockManager.recycle();
+            mImageBlockManager = null;
+        }
+    }
 }

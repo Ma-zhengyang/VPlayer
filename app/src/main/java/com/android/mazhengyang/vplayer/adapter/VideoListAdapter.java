@@ -1,7 +1,9 @@
 package com.android.mazhengyang.vplayer.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.mazhengyang.vplayer.R;
-import com.android.mazhengyang.vplayer.bean.VideoBean;
-import com.bumptech.glide.Glide;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.android.mazhengyang.vplayer.model.IImage;
+import com.android.mazhengyang.vplayer.model.IImageList;
+import com.android.mazhengyang.vplayer.utils.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,14 +24,14 @@ import butterknife.ButterKnife;
 
 public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final String TAG = "Vplayer" + VideoListAdapter.class.getSimpleName();
+    private static final String TAG = "Vplayer." + VideoListAdapter.class.getSimpleName();
 
-    private List<VideoBean> videoList = new ArrayList<>();
+    private IImageList mAllImages;
     private Context context;
     private OnVideoItemClickListener onVideoItemClickListener;
 
     public interface OnVideoItemClickListener {
-        void onVideoItemClick(VideoBean videoBean);
+        void onVideoItemClick(IImage image);
     }
 
     public void setOnVideoItemClickListener(OnVideoItemClickListener listener) {
@@ -42,11 +42,14 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.context = context;
     }
 
-    public void add(VideoBean videoBean) {
-        int i = getItemCount();
-        videoList.add(i, videoBean);
-        this.notifyItemInserted(i);
-        i++;
+    public void setImageList(IImageList list) {
+        Log.d(TAG, "setImageList: ");
+        mAllImages = list;
+        notifyDataSetChanged();
+    }
+
+    public void reDraw(int position) {
+        notifyDataSetChanged();
     }
 
     @Override
@@ -56,6 +59,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: ");
         View v = LayoutInflater.from(context)
                 .inflate(R.layout.item_video, parent, false);
         VideoItemViewHolder vh = new VideoItemViewHolder(v);
@@ -64,25 +68,61 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        VideoBean videoBean = videoList.get(position);
+
+        if (mAllImages == null) {
+            Log.d(TAG, "onBindViewHolder: mAllImages is null.");
+            return;
+        }
+
+        Log.d(TAG, "onBindViewHolder: position=" + position + ", " + holder);
+
+        IImage image = mAllImages.getImageAt(position);
 
         ImageView ivThumbnail = ((VideoItemViewHolder) holder).ivThumbnail;
         TextView tvTitle = ((VideoItemViewHolder) holder).tvTitle;
         TextView tvDuration = ((VideoItemViewHolder) holder).tvDuration;
-        ivThumbnail.setImageDrawable(null);
 
-        tvTitle.setText(videoBean.getDisplayName());
-        tvDuration.setText(String.valueOf(videoBean.getDuration()));
-        Glide.with(context)
-                .load(videoBean.getPath())
-                .placeholder(R.drawable.ic_image_loading)
-                .error(R.drawable.ic_image_loadfail)
-                .into(ivThumbnail);
+        ivThumbnail.setImageDrawable(null);
+        tvTitle.setText("");
+        tvDuration.setText("");
+
+        String title = image.getTitle();
+        String duration = Util.formatTime(image.getDuration());
+        Bitmap bitmap = image.getBitmap();
+
+//        Log.d(TAG, "onBindViewHolder: title=" + title + ", duration=" + duration + ", " + bitmap);
+
+        tvTitle.setText(title);
+        tvDuration.setText(duration);
+        if (bitmap != null && !bitmap.isRecycled()) {
+            ivThumbnail.setImageBitmap(bitmap);
+        } else {
+            Log.e(TAG, "onBindViewHolder: bitmap isRecycled");
+        }
+
+//        Glide.with(context)
+//                .load(bitmap)
+//                .placeholder(R.drawable.ic_image_loading)
+//                .error(R.drawable.ic_image_loadfail)
+//                .into(ivThumbnail);
     }
+
+//    @Override
+//    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
+//        if (payloads.isEmpty()) {
+//
+//        } else {
+//            onBindViewHolder(holder, position);
+//        }
+//    }
 
     @Override
     public int getItemCount() {
-        return videoList.size();
+        if (mAllImages == null) {
+            Log.d(TAG, "getItemCount: mAllImages is null.");
+            return 0;
+        }
+        return mAllImages.getCount();
     }
 
     public class VideoItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -103,7 +143,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @Override
         public void onClick(View v) {
             if (onVideoItemClickListener != null) {
-                onVideoItemClickListener.onVideoItemClick(videoList.get(this.getPosition()));
+                onVideoItemClickListener.onVideoItemClick(mAllImages.getImageAt(this.getPosition()));
             }
         }
     }

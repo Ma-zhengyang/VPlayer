@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class FloatingService extends Service {
 
-    private static final String TAG = "Vplayer" + FloatingService.class.getSimpleName();
+    private static final String TAG = "Vplayer." + FloatingService.class.getSimpleName();
 
     private FloatingPlayer floatingPlayer;
 

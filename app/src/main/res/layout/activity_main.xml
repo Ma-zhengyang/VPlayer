@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.android.mazhengyang.vplayer.MainActivity">
 
-    <android.support.v7.widget.RecyclerView
+    <com.android.mazhengyang.vplayer.widget.AsyncRecyclerView
         android:id="@+id/video_list_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+    </com.android.mazhengyang.vplayer.widget.AsyncRecyclerView>
 
 </android.support.constraint.ConstraintLayout>

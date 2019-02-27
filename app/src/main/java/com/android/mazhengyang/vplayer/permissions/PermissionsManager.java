@@ -100,6 +100,11 @@ public class PermissionsManager {
       if (permissions != null) {
         for (String perm : permissions) {
           Log.d(TAG, "Manifest contained permission: " + perm);
+          
+          if(perm.equals(Manifest.permission.SYSTEM_ALERT_WINDOW)){
+            Log.d(TAG, "getManifestPermissions: skip SYSTEM_ALERT_WINDOW permission");
+            continue;
+          }
           list.add(perm);
         }
       }
@@ -236,6 +241,11 @@ public class PermissionsManager {
       doPermissionWorkBeforeAndroidM(activity, permissions, action);
     } else {
       List<String> permList = getPermissionsListToRequest(activity, permissions, action);
+
+      for(String perm : permList){
+        Log.d(TAG, "requestPermissionsIfNecessaryForResult: " + perm);
+      }
+
       if (permList.isEmpty()) {
         //if there is no permission to request, there is no reason to keep the action int the list
         removePendingAction(action);

@@ -27,7 +27,7 @@ import java.io.IOException;
 public class FloatingPlayer implements View.OnClickListener,
         FloatingPlayerButton.Listener {
 
-    private static final String TAG = "Vplayer" + FloatingPlayer.class.getSimpleName();
+    private static final String TAG = "Vplayer." + FloatingPlayer.class.getSimpleName();
 
     private int baseX, baseY;
     private int xDst, yDst;

@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 public class PlayerActivity extends AppCompatActivity {
 
     @SuppressWarnings("unused")
-    private static final String TAG = "Vplayer" + PlayerActivity.class.getSimpleName();
+    private static final String TAG = "Vplayer." + PlayerActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
