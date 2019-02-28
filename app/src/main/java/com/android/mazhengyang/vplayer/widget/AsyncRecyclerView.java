@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class AsyncRecyclerView extends RecyclerView {
 
-    private static final String TAG = "Vplayer." + AsyncRecyclerView.class.getSimpleName();
+    private static final String TAG = "VPlayer." + AsyncRecyclerView.class.getSimpleName();
 
     private AsyncRVListener asyncRVListener;
 

@@ -26,7 +26,7 @@ import android.net.Uri;
  */
 public class VideoList extends BaseImageList {
 	@SuppressWarnings("unused")
-	private static final String TAG = "Vplayer." + VideoList.class.getSimpleName();
+	private static final String TAG = "VPlayer." + VideoList.class.getSimpleName();
 
 	public VideoList(ContentResolver resolver, Uri uri, int sort) {
 		super(resolver, uri, sort);

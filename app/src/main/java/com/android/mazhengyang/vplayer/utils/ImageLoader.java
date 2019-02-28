@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 
 public class ImageLoader {
-    private static final String TAG = "Vplayer." + ImageLoader.class.getSimpleName();
+    private static final String TAG = "VPlayer." + ImageLoader.class.getSimpleName();
 
     // Queue of work to do in the worker thread. The work is done in order.
     private final ArrayList<WorkItem> mQueue = new ArrayList<>();

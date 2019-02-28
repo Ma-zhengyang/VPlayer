@@ -31,7 +31,7 @@ import java.util.PriorityQueue;
  */
 public class ImageListUber implements IImageList {
 	@SuppressWarnings("unused")
-	private static final String TAG = "Vplayer." + ImageListUber.class.getSimpleName();
+	private static final String TAG = "VPlayer." + ImageListUber.class.getSimpleName();
 
 	private final IImageList[] mSubList;
 	private final PriorityQueue<MergeSlot> mQueue;

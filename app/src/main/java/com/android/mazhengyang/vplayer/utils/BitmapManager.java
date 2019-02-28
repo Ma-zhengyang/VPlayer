@@ -15,7 +15,7 @@ import java.util.WeakHashMap;
 
 public class BitmapManager {
 
-    private static final String TAG = "Vplayer." + BitmapManager.class.getSimpleName();
+    private static final String TAG = "VPlayer." + BitmapManager.class.getSimpleName();
 
     private static enum State {
         CANCEL, ALLOW

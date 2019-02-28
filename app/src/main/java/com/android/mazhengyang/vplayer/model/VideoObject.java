@@ -34,7 +34,7 @@ import com.android.mazhengyang.vplayer.utils.BitmapManager;
  * path to the actual video data.
  */
 public class VideoObject extends BaseImage implements IImage {
-    private static final String TAG = "Vplayer." + VideoObject.class.getSimpleName();
+    private static final String TAG = "VPlayer." + VideoObject.class.getSimpleName();
 
     /**
      * Constructor.

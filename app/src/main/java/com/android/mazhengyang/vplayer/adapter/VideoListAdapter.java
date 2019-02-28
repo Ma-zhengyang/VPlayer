@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 
 public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final String TAG = "Vplayer." + VideoListAdapter.class.getSimpleName();
+    private static final String TAG = "VPlayer." + VideoListAdapter.class.getSimpleName();
 
     private IImageList mAllImages;
     private Context context;
@@ -32,6 +32,8 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public interface OnVideoItemClickListener {
         void onVideoItemClick(IImage image);
+
+        void onVideoItemLongClick(IImage image);
     }
 
     public void setOnVideoItemClickListener(OnVideoItemClickListener listener) {
@@ -74,7 +76,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             return;
         }
 
-        Log.d(TAG, "onBindViewHolder: position=" + position + ", " + holder);
+        //   Log.d(TAG, "onBindViewHolder: position=" + position + ", " + holder);
 
         IImage image = mAllImages.getImageAt(position);
 
@@ -89,8 +91,6 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         String title = image.getTitle();
         String duration = Util.formatTime(image.getDuration());
         Bitmap bitmap = image.getBitmap();
-
-//        Log.d(TAG, "onBindViewHolder: title=" + title + ", duration=" + duration + ", " + bitmap);
 
         tvTitle.setText(title);
         tvDuration.setText(duration);
@@ -125,7 +125,8 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return mAllImages.getCount();
     }
 
-    public class VideoItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class VideoItemViewHolder extends RecyclerView.ViewHolder implements
+            View.OnClickListener, View.OnLongClickListener {
 
         @BindView(R.id.ivThumbnail)
         ImageView ivThumbnail;
@@ -138,13 +139,24 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             if (onVideoItemClickListener != null) {
-                onVideoItemClickListener.onVideoItemClick(mAllImages.getImageAt(this.getPosition()));
+                int position = this.getPosition();
+                onVideoItemClickListener.onVideoItemClick(mAllImages.getImageAt(position));
             }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (onVideoItemClickListener != null) {
+                int position = this.getPosition();
+                onVideoItemClickListener.onVideoItemLongClick(mAllImages.getImageAt(position));
+            }
+            return true;
         }
     }
 }

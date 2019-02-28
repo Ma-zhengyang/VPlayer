@@ -14,7 +14,7 @@ import com.android.mazhengyang.vplayer.view.IVideoListView;
 
 public class VideoListPresentImpl implements IVideoListPresent {
 
-    private static final String TAG = "Vplayer." + VideoListPresentImpl.class.getSimpleName();
+    private static final String TAG = "VPlayer." + VideoListPresentImpl.class.getSimpleName();
 
     private IVideoListModel videoListModel;
     private IVideoListView videoListView;

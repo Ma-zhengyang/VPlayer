@@ -35,7 +35,7 @@ import com.android.mazhengyang.vplayer.utils.BitmapManager;
  * the path to the actual image data.
  */
 public abstract class BaseImage implements IImage {
-	private static final String TAG = "Vplayer." + BaseImage.class.getSimpleName();
+	private static final String TAG = "VPlayer." + BaseImage.class.getSimpleName();
 	protected ContentResolver mContentResolver;
 
 	// Database field

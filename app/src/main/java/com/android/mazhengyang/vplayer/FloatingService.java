@@ -2,6 +2,7 @@ package com.android.mazhengyang.vplayer;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -13,7 +14,7 @@ import android.util.Log;
 
 public class FloatingService extends Service {
 
-    private static final String TAG = "Vplayer." + FloatingService.class.getSimpleName();
+    private static final String TAG = "VPlayer." + FloatingService.class.getSimpleName();
 
     private FloatingPlayer floatingPlayer;
 
@@ -70,5 +71,14 @@ public class FloatingService extends Service {
         }
 
         return START_STICKY;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        // TODO Auto-generated method stub
+        if (floatingPlayer != null) {
+            floatingPlayer.onConfigurationChanged(this);
+        }
+        super.onConfigurationChanged(newConfig);
     }
 }

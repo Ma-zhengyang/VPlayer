@@ -27,10 +27,10 @@ import java.io.IOException;
 public class FloatingPlayer implements View.OnClickListener,
         FloatingPlayerButton.Listener {
 
-    private static final String TAG = "Vplayer." + FloatingPlayer.class.getSimpleName();
+    private static final String TAG = "VPlayer." + FloatingPlayer.class.getSimpleName();
 
     private int baseX, baseY;
-    private int xDst, yDst;
+    private int movedXoffset, movedYoffset;
     private float mStartX, mStartY;
     private int videoWidth;
     private int videoHeight;
@@ -519,23 +519,22 @@ public class FloatingPlayer implements View.OnClickListener,
         if (mediaPlayer == null) {
             return;
         }
-        videoWidth = floatingViewWidth;
-        videoHeight = floatingViewHeight;
+        Log.d(TAG, "resize: ");
+//        videoWidth = floatingViewWidth;
+//        videoHeight = floatingViewHeight;
 
-/*		int videoWidth = floatingViewWidth;
-        int videoHeight = floatingViewHeight;
-		float widRate = (float) screenWidth / videoWidth;
-		float heiRate = (float) screenHeight / videoHeight;
-		if (widRate > heiRate) {
-			videoWidth = (int) (videoWidth * heiRate);
-			videoHeight = screenHeight;
-		} else if (widRate < heiRate) {
-			videoWidth = screenWidth;
-			videoHeight = (int) (videoHeight * widRate);
-		} else {
-			videoWidth = screenWidth;
-			videoHeight = screenHeight;
-		}*/
+        float widRate = (float) screenWidth / videoWidth;
+        float heiRate = (float) screenHeight / videoHeight;
+        if (widRate > heiRate) {
+            videoWidth = (int) (videoWidth * heiRate);
+            videoHeight = screenHeight;
+        } else if (widRate < heiRate) {
+            videoWidth = screenWidth;
+            videoHeight = (int) (videoHeight * widRate);
+        } else {
+            videoWidth = screenWidth;
+            videoHeight = screenHeight;
+        }
     }
 
     @Override
@@ -599,8 +598,8 @@ public class FloatingPlayer implements View.OnClickListener,
                         updateViewPosition(-1, -1, true);
                     }
                     mStartX = mStartY = 0;
-                    xDst = wmParams.x - baseX;
-                    yDst = wmParams.y - baseY;
+                    movedXoffset = wmParams.x - baseX;
+                    movedYoffset = wmParams.y - baseY;
                     maybeStartHiding();
                     break;
             }
@@ -653,6 +652,8 @@ public class FloatingPlayer implements View.OnClickListener,
         screenWidth = dm.widthPixels;
         screenHeight = dm.heightPixels;
 
+        Log.d(TAG, "onConfigurationChanged: screenWidth=" + screenWidth + ", screenHeight=" + screenHeight);
+
         try {
             wmParams.x = (screenWidth - floatingViewWidth) / 2;
             wmParams.y = 0;
@@ -660,8 +661,8 @@ public class FloatingPlayer implements View.OnClickListener,
             baseX = wmParams.x;
             baseY = 0;
 
-            wmParams.x += xDst;
-            wmParams.y += yDst;
+            wmParams.x += movedXoffset;
+            wmParams.y += movedYoffset;
             resetLocation();
             windowManager.updateViewLayout(layoutView, wmParams);
         } catch (NullPointerException e) {

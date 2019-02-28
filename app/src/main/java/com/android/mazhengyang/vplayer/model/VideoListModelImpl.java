@@ -14,7 +14,7 @@ import com.android.mazhengyang.vplayer.utils.ImageManager;
 
 public class VideoListModelImpl implements IVideoListModel {
 
-    private static final String TAG = "Vplayer." + VideoListModelImpl.class.getSimpleName();
+    private static final String TAG = "VPlayer." + VideoListModelImpl.class.getSimpleName();
 
     private ImageLoader mLoader;
     private ImageBlockManager mImageBlockManager;

@@ -18,7 +18,7 @@ import static com.android.mazhengyang.vplayer.utils.Util.Assert;
 
 public class ImageBlockManager {
     @SuppressWarnings("unused")
-    private static final String TAG = "Vplayer." + ImageBlockManager.class.getSimpleName();
+    private static final String TAG = "VPlayer." + ImageBlockManager.class.getSimpleName();
 
     // Number of rows we want to cache.
     private static final int CACHE_ROWS = 60;
@@ -209,13 +209,13 @@ public class ImageBlockManager {
         }
 
         public void loadImages() {
-            Log.d(TAG, "loadImages: mRow=" + mRow);
+        //    Log.d(TAG, "loadImages: mRow=" + mRow);
             final IImage image = mImageList.getImageAt(mRow);
             if (image != null) {
 
-                Log.d(TAG, "loadImages: start=" + System.currentTimeMillis());
+        //        Log.d(TAG, "loadImages: start=" + System.currentTimeMillis());
                 Bitmap b = image.miniThumbBitmap();
-                Log.d(TAG, "loadImages: end=" + System.currentTimeMillis());
+          //      Log.d(TAG, "loadImages: end=" + System.currentTimeMillis());
 
                 if (b != null) {
                     drawBitmap(image, b);
@@ -245,7 +245,7 @@ public class ImageBlockManager {
         private void drawBitmap(IImage image, Bitmap b) {
             mRequestedMask = 0;
             if (isVisible()) {
-                Log.d(TAG, "drawBitmap: mRow=======" + mRow);
+               // Log.d(TAG, "drawBitmap: mRow=" + mRow);
                 iVideoListPresent.reDraw(mRow);
             }
         }

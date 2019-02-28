@@ -29,7 +29,7 @@ import com.android.mazhengyang.vplayer.utils.ImageManager;
  * A collection of <code>BaseImage</code>s.
  */
 public abstract class BaseImageList implements IImageList {
-    private static final String TAG = "Vplayer." + BaseImageList.class.getSimpleName();
+    private static final String TAG = "VPlayer." + BaseImageList.class.getSimpleName();
     private static final int CACHE_CAPACITY = 512;
     private final LruCache<Integer, BaseImage> mCache = new LruCache<>(
             CACHE_CAPACITY);
@@ -202,7 +202,7 @@ public abstract class BaseImageList implements IImageList {
     public static String sortOrder(int index) {
         switch (index) {
             case ImageManager.SORT_BY_NAME:
-                return "_size ASC";
+                return Media.DEFAULT_SORT_ORDER;
             case ImageManager.SORT_BY_SIZE:
                 return "_size ASC";
             case ImageManager.SORT_BY_TYPE:
