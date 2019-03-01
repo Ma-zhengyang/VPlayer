@@ -6,5 +6,8 @@
     <string name="drawoverlays_permission_failed">授权失败!</string>
     <string name="search">"搜索"</string>
     <string name="search_video">"搜索视频"</string>
-    <string name="menu_sort_by">"排序方式"</string>
+    <string name="menu_fresh">"刷新"</string>
+    <string name="menu_setting">"设置"</string>
+    <string name="menu_help">"帮助"</string>
+    <string name="menu_sort_by">"排序"</string>
 </resources>

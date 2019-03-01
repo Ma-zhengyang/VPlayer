@@ -11,19 +11,26 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize">
 
         <include layout="@layout/video_search_title" />
 
     </android.support.v7.widget.Toolbar>
 
-    <com.android.mazhengyang.vplayer.widget.AsyncRecyclerView
-        android:id="@+id/video_list_recyclerView"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never">
+        android:layout_height="match_parent">
 
-    </com.android.mazhengyang.vplayer.widget.AsyncRecyclerView>
+        <com.android.mazhengyang.vplayer.widget.AsyncRecyclerView
+            android:id="@+id/video_list_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
+
+        </com.android.mazhengyang.vplayer.widget.AsyncRecyclerView>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

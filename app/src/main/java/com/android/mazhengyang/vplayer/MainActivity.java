@@ -31,6 +31,10 @@ import com.android.mazhengyang.vplayer.presenter.IVideoListPresent;
 import com.android.mazhengyang.vplayer.presenter.VideoListPresentImpl;
 import com.android.mazhengyang.vplayer.view.IVideoListView;
 import com.android.mazhengyang.vplayer.widget.AsyncRecyclerView;
+import com.scwang.smartrefresh.header.MaterialHeader;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements
     View searchView;
     @BindView(R.id.search_edit_text)
     EditText searchEditText;
+    @BindView(R.id.refreshLayout)
+    RefreshLayout mRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,42 +70,7 @@ public class MainActivity extends AppCompatActivity implements
 
         requestPermissions();
 
-        videoListPresent = new VideoListPresentImpl(this, this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        asyncRecyclerView.setLayoutManager(layoutManager);
-        asyncRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        asyncRecyclerView.setAsyncRVListener(this);
-        videoListAdapter = new VideoListAdapter(this);
-        videoListAdapter.setOnVideoItemClickListener(onVideoItemClickListener);
-        asyncRecyclerView.setAdapter(videoListAdapter);
-
-        toolbar.inflateMenu(R.menu.main);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-                switch (id) {
-                    case R.id.action_search:
-                        if (searchView.getVisibility() == View.VISIBLE) {
-                            searchView.setVisibility(View.INVISIBLE);
-                        } else {
-                            searchView.setVisibility(View.VISIBLE);
-                            searchEditText.requestFocus();
-                            InputMethodManager inputMethodManager = (InputMethodManager)
-                                    getSystemService(Context.INPUT_METHOD_SERVICE);
-                            if (inputMethodManager != null) {
-                                inputMethodManager.showSoftInput(searchEditText, 0);
-                            } else {
-                                Log.w(TAG, "onMenuItemClick: InputMethodManager is null");
-                            }
-                        }
-                        break;
-                    case R.id.action_sort_by:
-                        break;
-                }
-                return true;
-            }
-        });
+        initView();
     }
 
     @Override
@@ -129,6 +100,53 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
         super.onBackPressed();
+    }
+
+    private void initView() {
+        Log.d(TAG, "initView: ");
+        mRefreshLayout.setRefreshHeader(new MaterialHeader(this));
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+                Log.d(TAG, "onRefresh: ");
+                mRefreshLayout.finishRefresh();
+            }
+        });
+
+        videoListPresent = new VideoListPresentImpl(this, this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        asyncRecyclerView.setLayoutManager(layoutManager);
+      //  asyncRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        asyncRecyclerView.setAsyncRVListener(this);
+        videoListAdapter = new VideoListAdapter(this);
+        videoListAdapter.setOnVideoItemClickListener(onVideoItemClickListener);
+        asyncRecyclerView.setAdapter(videoListAdapter);
+
+        toolbar.inflateMenu(R.menu.main);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                switch (id) {
+                    case R.id.action_search:
+                        if (searchView.getVisibility() == View.VISIBLE) {
+                            searchView.setVisibility(View.INVISIBLE);
+                        } else {
+                            searchView.setVisibility(View.VISIBLE);
+                            searchEditText.requestFocus();
+                            InputMethodManager inputMethodManager = (InputMethodManager)
+                                    getSystemService(Context.INPUT_METHOD_SERVICE);
+                            if (inputMethodManager != null) {
+                                inputMethodManager.showSoftInput(searchEditText, 0);
+                            } else {
+                                Log.w(TAG, "onMenuItemClick: InputMethodManager is null");
+                            }
+                        }
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -208,6 +226,11 @@ public class MainActivity extends AppCompatActivity implements
 
                 @Override
                 public void onVideoItemLongClick(IImage image) {
+
+                }
+
+                @Override
+                public void onDetailClick(IImage image) {
                     Log.d(TAG, "onVideoItemLongClick: " + image.fullSizeImageUri());
                     Log.d(TAG, "onVideoItemLongClick: " + image.getDataPath());
                     Log.d(TAG, "onVideoItemLongClick: " + image.getMimeType());
