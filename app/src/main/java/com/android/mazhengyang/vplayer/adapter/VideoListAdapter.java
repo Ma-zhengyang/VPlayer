@@ -138,8 +138,8 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextView tvDuration;
         @BindView(R.id.tvTitle)
         TextView tvTitle;
-        @BindView(R.id.ivDetail)
-        ImageButton ivDetail;
+//        @BindView(R.id.ivDetail)
+//        ImageButton ivDetail;
 
 
         public VideoItemViewHolder(View itemView) {
@@ -147,18 +147,18 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
-            ivDetail.setOnClickListener(this);
+//            ivDetail.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.ivDetail:
-                    if (onVideoItemClickListener != null) {
-                        int position = this.getPosition();
-                        onVideoItemClickListener.onDetailClick(mAllImages.getImageAt(position));
-                    }
-                    break;
+//                case R.id.ivDetail:
+//                    if (onVideoItemClickListener != null) {
+//                        int position = this.getPosition();
+//                        onVideoItemClickListener.onDetailClick(mAllImages.getImageAt(position));
+//                    }
+//                    break;
                 default:
                     if (onVideoItemClickListener != null) {
                         int position = this.getPosition();

@@ -48,10 +48,9 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textSize="16sp" />
 
-    <ImageButton
+<!--    <ImageButton
         android:id="@+id/ivDetail"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_hamburger" />
+        android:layout_height="wrap_content" />-->
 
 </LinearLayout>
